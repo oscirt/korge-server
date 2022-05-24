@@ -16,6 +16,7 @@ val database = Database.connect(
             "&user=uhcekrgrjnvrcn&password=6fcacaebd4e28eadb311f617a5ad59407a0fc7d909857f72468915e66497977c",
     driver = "org.postgresql.Driver",
 )
+//aaa
 
 lateinit var connections: HashMap<String, Connection?>
 
