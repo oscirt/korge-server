@@ -4,6 +4,7 @@ import com.example.connections
 import com.example.database
 import com.example.schemas.JsonCredential
 import com.example.schemas.Users
+import com.example.serialization.Serialization.getJsonCredential
 import io.ktor.server.routing.*
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -48,10 +49,4 @@ fun Application.configureRouting() {
             call.respond(HttpStatusCode.OK,"Values inserted")
         }
     }
-}
-
-fun getJsonCredential(json: String) : JsonCredential {
-    val username = json.substring(13 until json.indexOf("\",\""))
-    val password = json.substring(json.indexOf("\",\"")+14 until json.indexOf("\"}"))
-    return JsonCredential(username, password)
 }
