@@ -37,6 +37,8 @@ fun Application.configureRouting() {
 
     routing {
         post("/register") {
+            val text = call.receiveText()
+            println(text)
             val jsonCredential = call.receive<JsonCredential>()
             for (row in database.from(Users).select()) {
                 if (row[Users.username] == jsonCredential.username) return@post
