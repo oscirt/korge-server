@@ -33,6 +33,7 @@ fun Application.configureSockets() {
                             val text = frame.readText()
 //                            val point = Json.decodeFromString<Point>(text)
                             val point = getJsonPoint(text)
+                            println(point)
                             connections[point.name] = thisConnection
                             connections[point.name]?.json = text
                             connections[point.name]?.point = point
