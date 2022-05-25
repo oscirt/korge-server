@@ -23,7 +23,7 @@ fun Application.configureRouting() {
 
     routing {
         post("/login") {
-            val jsonCredential = call.receive<JsonCredential>()
+            val jsonCredential = getJsonCredential(call.receiveText())
             for (row in database.from(Users).select()) {
                 if (row[Users.username] == jsonCredential.username &&
                         row[Users.password] == jsonCredential.password) {
@@ -37,17 +37,21 @@ fun Application.configureRouting() {
 
     routing {
         post("/register") {
-            val text = call.receiveText()
-            println(text)
-//            val jsonCredential = call.receive<JsonCredential>()
-//            for (row in database.from(Users).select()) {
-//                if (row[Users.username] == jsonCredential.username) return@post
-//            }
-//            database.insert(Users) {
-//                set(it.username, jsonCredential.username)
-//                set(it.password, jsonCredential.password)
-//            }
-//            call.respond(HttpStatusCode.OK,"Values inserted")
+            val jsonCredential = getJsonCredential(call.receiveText())
+            for (row in database.from(Users).select()) {
+                if (row[Users.username] == jsonCredential.username) return@post
+            }
+            database.insert(Users) {
+                set(it.username, jsonCredential.username)
+                set(it.password, jsonCredential.password)
+            }
+            call.respond(HttpStatusCode.OK,"Values inserted")
         }
     }
+}
+
+fun getJsonCredential(json: String) : JsonCredential {
+    val username = json.substring(13 until json.indexOf("\",\""))
+    val password = json.substring(json.indexOf("\",\"")+14 until json.indexOf("\"}"))
+    return JsonCredential(username, password)
 }
