@@ -21,7 +21,7 @@ lateinit var connections: HashMap<String, Connection?>
 
 fun main() {
     connections = HashMap()
-    embeddedServer(Netty, port = 8080) {
+    embeddedServer(Netty, port = System.getenv("PORT").toInt()) {
         configureRouting()
         configureSecurity()
         configureSerialization()
