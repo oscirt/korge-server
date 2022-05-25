@@ -24,8 +24,9 @@ fun Application.configureRouting() {
 
     routing {
         post("/login") {
-            val jsonCredential = getJsonCredential(call.receiveText())
-            println(jsonCredential)
+            val text = call.receiveText()
+            println(text)
+            val jsonCredential = getJsonCredential(text)
             for (row in database.from(Users).select()) {
                 if (row[Users.username] == jsonCredential.username &&
                         row[Users.password] == jsonCredential.password) {
@@ -39,10 +40,13 @@ fun Application.configureRouting() {
 
     routing {
         post("/register") {
-            val jsonCredential = getJsonCredential(call.receiveText())
-            println(jsonCredential)
+            val text = call.receiveText()
+            println(text)
+            val jsonCredential = getJsonCredential(text)
             for (row in database.from(Users).select()) {
-                if (row[Users.username] == jsonCredential.username) return@post
+                if (row[Users.username] == jsonCredential.username) {
+                    return@post
+                }
             }
             database.insert(Users) {
                 set(it.username, jsonCredential.username)
