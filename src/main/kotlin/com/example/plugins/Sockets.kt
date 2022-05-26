@@ -33,7 +33,7 @@ fun Application.configureSockets() {
                             val text = frame.readText()
                             if (text[0] != '{') {
                                 connections.asSequence().filter {
-                                    it.value != null
+                                    it.value != null && it.value != thisConnection
                                 }.forEach {
                                     println("Send to ${it.value?.point?.name}")
                                     it.value?.session?.send(text)
