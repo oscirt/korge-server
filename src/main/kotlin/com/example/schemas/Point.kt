@@ -4,5 +4,6 @@ package com.example.schemas
 data class Point(
     val name: String,
     val x: Double,
-    val y: Double
+    val y: Double,
+    val direction: Int
 )

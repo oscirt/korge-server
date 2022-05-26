@@ -1,7 +1,6 @@
 package com.example.schemas
 
 import io.ktor.websocket.*
-import java.util.concurrent.atomic.AtomicInteger
 
 data class Connection(
     var session: DefaultWebSocketSession?
@@ -10,6 +9,7 @@ data class Connection(
     var point = Point(
         "default",
         0.0,
-        0.0
+        0.0,
+        4
     )
 }
