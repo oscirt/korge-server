@@ -2,6 +2,7 @@ package com.example.plugins
 
 import com.example.connections
 import com.example.schemas.Connection
+import com.example.schemas.Wolf
 import com.example.serialization.Serialization.getJsonPoint
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
@@ -19,12 +20,12 @@ fun Application.configureSockets() {
 
     routing {
         webSocket("/game") {
+            val myWolf = Wolf(800.0, 800.0, 0)
             val thisConnection = Connection(this)
             try {
                 connections.asSequence().filter {
                     it.value != null
                 }.forEach {
-//                    send(Json.encodeToString(it.value?.point))
                     send(it.value?.json!!)
                 }
                 for (frame in incoming) {
@@ -35,11 +36,9 @@ fun Application.configureSockets() {
                                 connections.asSequence().filter {
                                     it.value != null && it.value != thisConnection
                                 }.forEach {
-                                    println("Send to ${it.value?.point?.name}")
                                     it.value?.session?.send(text)
                                 }
                             } else {
-//                            val point = Json.decodeFromString<Point>(text)
                                 val point = getJsonPoint(text)
                                 println(point)
                                 connections[point.name] = thisConnection
@@ -48,7 +47,6 @@ fun Application.configureSockets() {
                                 connections.asSequence().filter {
                                     it.value != null && it.key != point.name
                                 }.forEach {
-                                    println("Send to ${it.value?.point?.name}")
                                     it.value?.session?.send(text)
                                 }
                             }

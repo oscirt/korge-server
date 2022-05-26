@@ -2,7 +2,6 @@ package com.example.plugins
 
 import com.example.connections
 import com.example.database
-import com.example.schemas.JsonCredential
 import com.example.schemas.Users
 import com.example.serialization.Serialization.getJsonCredential
 import io.ktor.server.routing.*
