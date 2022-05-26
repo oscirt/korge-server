@@ -31,17 +31,26 @@ fun Application.configureSockets() {
                     when (frame) {
                         is Frame.Text -> {
                             val text = frame.readText()
+                            if (text[0] != '{') {
+                                connections.asSequence().filter {
+                                    it.value != null
+                                }.forEach {
+                                    println("Send to ${it.value?.point?.name}")
+                                    it.value?.session?.send(text)
+                                }
+                            } else {
 //                            val point = Json.decodeFromString<Point>(text)
-                            val point = getJsonPoint(text)
-                            println(point)
-                            connections[point.name] = thisConnection
-                            connections[point.name]?.json = text
-                            connections[point.name]?.point = point
-                            connections.asSequence().filter {
-                                it.value != null && it.key != point.name
-                            }.forEach {
-                                println("Send to ${it.value?.point?.name}")
-                                it.value?.session?.send(text)
+                                val point = getJsonPoint(text)
+                                println(point)
+                                connections[point.name] = thisConnection
+                                connections[point.name]?.json = text
+                                connections[point.name]?.point = point
+                                connections.asSequence().filter {
+                                    it.value != null && it.key != point.name
+                                }.forEach {
+                                    println("Send to ${it.value?.point?.name}")
+                                    it.value?.session?.send(text)
+                                }
                             }
                         }
                     }
